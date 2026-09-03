@@ -155,7 +155,7 @@ def run(argv=None) -> int:
             print("Running in demo mode: using keyword matching, not an LLM.")
         else:
             print(
-                "No ANTHROPIC_API_KEY or OPENAI_API_KEY found. Running in "
+                "No OPENAI_API_KEY or ANTHROPIC_API_KEY found. Running in "
                 "demo mode: using keyword matching, not an LLM."
             )
         match = match_background_to_job(background, job_description)

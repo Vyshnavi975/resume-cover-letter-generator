@@ -1,10 +1,11 @@
 """LLM-backed generation of resume bullets and a cover letter.
 
-Supports Anthropic (Claude) and OpenAI, selected automatically based on
-which API key is present in the environment. Anthropic is preferred if
-both are set. Both SDKs are imported lazily inside the functions that
-need them, so the rest of the package (and the test suite) has no hard
-dependency on either being installed.
+Supports OpenAI and Anthropic (Claude) as an optional secondary
+alternative, selected automatically based on which API key is present
+in the environment. OpenAI is preferred if both are set. Both SDKs are
+imported lazily inside the functions that need them, so the rest of
+the package (and the test suite) has no hard dependency on either
+being installed.
 """
 
 from __future__ import annotations
@@ -14,8 +15,8 @@ import os
 import re
 from typing import Any, Dict, Optional, Tuple
 
-DEFAULT_ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-5-20250929")
 DEFAULT_OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+DEFAULT_ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-5-20250929")
 
 
 class LLMError(RuntimeError):
@@ -24,12 +25,12 @@ class LLMError(RuntimeError):
 
 
 def get_provider() -> Optional[str]:
-    """Return ``"anthropic"``, ``"openai"``, or ``None`` based on which API
-    key is present in the environment. Anthropic wins if both are set."""
-    if os.environ.get("ANTHROPIC_API_KEY"):
-        return "anthropic"
+    """Return ``"openai"``, ``"anthropic"``, or ``None`` based on which API
+    key is present in the environment. OpenAI wins if both are set."""
     if os.environ.get("OPENAI_API_KEY"):
         return "openai"
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        return "anthropic"
     return None
 
 
@@ -100,7 +101,32 @@ def _parse_json_response(raw_text: str) -> Dict[str, str]:
     }
 
 
+def _generate_with_openai(prompt: str) -> str:
+    try:
+        import openai
+    except ImportError as exc:
+        raise LLMError(
+            "The 'openai' package is not installed. Run `pip install "
+            "openai` or unset OPENAI_API_KEY to use demo mode."
+        ) from exc
+
+    api_key = os.environ.get("OPENAI_API_KEY")
+    client = openai.OpenAI(api_key=api_key)
+    try:
+        response = client.chat.completions.create(
+            model=DEFAULT_OPENAI_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.4,
+        )
+    except Exception as exc:  # noqa: BLE001
+        raise LLMError(f"OpenAI API call failed: {exc}") from exc
+
+    return response.choices[0].message.content or ""
+
+
 def _generate_with_anthropic(prompt: str) -> str:
+    # Secondary/alternative provider — used only when ANTHROPIC_API_KEY is
+    # set and OPENAI_API_KEY is not.
     try:
         import anthropic
     except ImportError as exc:
@@ -126,29 +152,6 @@ def _generate_with_anthropic(prompt: str) -> str:
     )
 
 
-def _generate_with_openai(prompt: str) -> str:
-    try:
-        import openai
-    except ImportError as exc:
-        raise LLMError(
-            "The 'openai' package is not installed. Run `pip install "
-            "openai` or unset OPENAI_API_KEY to use demo mode."
-        ) from exc
-
-    api_key = os.environ.get("OPENAI_API_KEY")
-    client = openai.OpenAI(api_key=api_key)
-    try:
-        response = client.chat.completions.create(
-            model=DEFAULT_OPENAI_MODEL,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.4,
-        )
-    except Exception as exc:  # noqa: BLE001
-        raise LLMError(f"OpenAI API call failed: {exc}") from exc
-
-    return response.choices[0].message.content or ""
-
-
 def generate_with_llm(
     background: Dict[str, Any], job_description: str, provider: Optional[str] = None
 ) -> Tuple[str, str]:
@@ -162,16 +165,16 @@ def generate_with_llm(
     provider = provider or get_provider()
     if provider is None:
         raise LLMError(
-            "No LLM provider available: set ANTHROPIC_API_KEY or "
-            "OPENAI_API_KEY to enable LLM generation."
+            "No LLM provider available: set OPENAI_API_KEY or "
+            "ANTHROPIC_API_KEY to enable LLM generation."
         )
 
     prompt = _build_prompt(background, job_description)
 
-    if provider == "anthropic":
-        raw = _generate_with_anthropic(prompt)
-    elif provider == "openai":
+    if provider == "openai":
         raw = _generate_with_openai(prompt)
+    elif provider == "anthropic":
+        raw = _generate_with_anthropic(prompt)
     else:
         raise LLMError(f"Unknown provider: {provider!r}")
 

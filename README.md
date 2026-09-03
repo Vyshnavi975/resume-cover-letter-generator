@@ -5,8 +5,9 @@ job description into **tailored resume bullet points** and a **draft
 cover letter** — with the candidate's real experience mapped onto the
 job's actual requirements.
 
-If `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` is set, the tool calls that
-LLM to genuinely rewrite and tailor the content. Otherwise it falls
+If `OPENAI_API_KEY` is set, the tool calls that LLM to genuinely
+rewrite and tailor the content (an Anthropic/Claude alternative is
+also supported — see [Setup](#setup)). Otherwise it falls
 back to a deterministic **demo mode** that does keyword matching
 between the background and job description and fills in a structured
 template — no API key required, and the output is clearly labeled as
@@ -17,7 +18,7 @@ demo-generated.
 - **CLI tool**: point it at a background file and a job description,
   get back two Markdown files.
 - **Two generation modes**, selected automatically:
-  - **LLM mode** (Anthropic Claude or OpenAI) — genuinely rewritten,
+  - **LLM mode** (OpenAI) — genuinely rewritten,
     tailored bullets and a fresh cover letter draft, grounded in the
     candidate's real background (the prompt explicitly forbids
     inventing facts).
@@ -56,7 +57,7 @@ demo-generated.
    achievements, and calls out the specific matched skills.
 
 In **LLM mode**, `generator/llm.py` instead sends the full structured
-background plus the job description to Claude or GPT with instructions
+background plus the job description to GPT with instructions
 to rewrite (not invent) the candidate's real experience into tailored,
 well-written bullets and a cover letter, requesting a JSON response
 with `resume_bullets` and `cover_letter` Markdown fields that are
@@ -73,20 +74,20 @@ pip install -r requirements.txt
 ```
 
 `requirements.txt` includes `PyYAML` (needed to read `.yaml` background
-files) and `pytest` (for the test suite). `anthropic` and `openai` are
+files) and `pytest` (for the test suite). `openai` and `anthropic` are
 also listed but are only actually *used* if you set the corresponding
 API key — demo mode works with neither installed.
 
-To enable LLM mode, set one of:
+To enable LLM mode, set:
 
 ```bash
-export ANTHROPIC_API_KEY="sk-ant-..."
-# or
 export OPENAI_API_KEY="sk-..."
 ```
 
-If both are set, Anthropic is used. You can force demo mode even with
-a key set via `--demo`.
+An Anthropic (Claude) backend is also supported as a secondary option
+— set `ANTHROPIC_API_KEY` instead if you'd rather use that. If both are
+set, OpenAI is used. You can force demo mode even with a key set via
+`--demo`.
 
 ## Usage
 
@@ -114,7 +115,7 @@ This writes `resume_bullets.md` and `cover_letter.md` into
 
 ```
 $ python3 -m generator.cli -b examples/background.yaml -j examples/job_description.txt -o /tmp/out
-No ANTHROPIC_API_KEY or OPENAI_API_KEY found. Running in demo mode: using keyword matching, not an LLM.
+No OPENAI_API_KEY or ANTHROPIC_API_KEY found. Running in demo mode: using keyword matching, not an LLM.
 Mode: demo
 Wrote /tmp/out/resume_bullets.md
 Wrote /tmp/out/cover_letter.md
@@ -125,7 +126,7 @@ Wrote /tmp/out/cover_letter.md
 ```markdown
 # Tailored Resume Bullets for Jordan Alvarez
 
-> _Generated in **demo mode** (no `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` found) using deterministic keyword matching, not an LLM. Set one of those environment variables for genuinely tailored, freshly written content._
+> _Generated in **demo mode** (no `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` found) using deterministic keyword matching, not an LLM. Set one of those environment variables for genuinely tailored, freshly written content._
 
 ## Skills to Highlight (matched to this job)
 
@@ -173,10 +174,10 @@ Sincerely,
 Jordan Alvarez
 ```
 
-Run the same command with `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` set
-(and the corresponding package installed) to get freshly written,
-LLM-generated content instead — same CLI, same output files, the
-`Mode:` line in the console output tells you which path ran.
+Run the same command with `OPENAI_API_KEY` set (and the `openai`
+package installed) to get freshly written, LLM-generated content
+instead — same CLI, same output files, the `Mode:` line in the console
+output tells you which path ran.
 
 ## Input file format
 
@@ -241,7 +242,7 @@ resume-cover-letter-generator/
 │   ├── __init__.py
 │   ├── matcher.py      # keyword extraction + background/JD matching (no API key needed)
 │   ├── templates.py    # demo-mode Markdown rendering (no API key needed)
-│   ├── llm.py           # Anthropic/OpenAI-backed generation
+│   ├── llm.py           # OpenAI-backed generation
 │   └── cli.py           # argument parsing, file I/O, mode selection
 ├── examples/
 │   ├── background.yaml
