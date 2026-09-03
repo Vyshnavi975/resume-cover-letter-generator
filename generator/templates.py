@@ -13,10 +13,9 @@ from typing import Any, Dict, List, Optional
 from .matcher import MatchResult, extract_job_meta
 
 DEMO_MODE_NOTICE = (
-    "> _Generated in **demo mode** (no `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`"
-    " found) using deterministic keyword matching, not an LLM. Set one of"
-    " those environment variables for genuinely tailored, freshly written"
-    " content._"
+    "> _Generated in **demo mode** (no `OPENAI_API_KEY` found) using"
+    " deterministic keyword matching, not an LLM. Set that environment"
+    " variable for genuinely tailored, freshly written content._"
 )
 
 def _rewrite_bullet(text: str) -> str:

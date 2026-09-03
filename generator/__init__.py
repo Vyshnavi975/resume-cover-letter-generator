@@ -6,8 +6,8 @@ achievements) and a target job description and produces:
 * tailored resume bullet points (``resume_bullets.md``)
 * a draft cover letter (``cover_letter.md``)
 
-If ``ANTHROPIC_API_KEY`` or ``OPENAI_API_KEY`` is set in the environment,
-generation is delegated to that LLM for genuinely tailored writing.
+If ``OPENAI_API_KEY`` is set in the environment, generation is
+delegated to that LLM for genuinely tailored writing.
 Otherwise the tool falls back to a deterministic, keyword-matching
 "demo mode" that still produces a coherent, readable draft.
 """

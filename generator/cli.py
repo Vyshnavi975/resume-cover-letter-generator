@@ -155,8 +155,8 @@ def run(argv=None) -> int:
             print("Running in demo mode: using keyword matching, not an LLM.")
         else:
             print(
-                "No OPENAI_API_KEY or ANTHROPIC_API_KEY found. Running in "
-                "demo mode: using keyword matching, not an LLM."
+                "No OPENAI_API_KEY found. Running in demo mode: using "
+                "keyword matching, not an LLM."
             )
         match = match_background_to_job(background, job_description)
         resume_bullets_md = templates.render_resume_bullets(background, match)

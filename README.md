@@ -6,8 +6,7 @@ cover letter** — with the candidate's real experience mapped onto the
 job's actual requirements.
 
 If `OPENAI_API_KEY` is set, the tool calls that LLM to genuinely
-rewrite and tailor the content (an Anthropic/Claude alternative is
-also supported — see [Setup](#setup)). Otherwise it falls
+rewrite and tailor the content. Otherwise it falls
 back to a deterministic **demo mode** that does keyword matching
 between the background and job description and fills in a structured
 template — no API key required, and the output is clearly labeled as
@@ -74,9 +73,9 @@ pip install -r requirements.txt
 ```
 
 `requirements.txt` includes `PyYAML` (needed to read `.yaml` background
-files) and `pytest` (for the test suite). `openai` and `anthropic` are
-also listed but are only actually *used* if you set the corresponding
-API key — demo mode works with neither installed.
+files) and `pytest` (for the test suite). `openai` is also listed but
+is only actually *used* if you set `OPENAI_API_KEY` — demo mode works
+without it installed.
 
 To enable LLM mode, set:
 
@@ -84,10 +83,7 @@ To enable LLM mode, set:
 export OPENAI_API_KEY="sk-..."
 ```
 
-An Anthropic (Claude) backend is also supported as a secondary option
-— set `ANTHROPIC_API_KEY` instead if you'd rather use that. If both are
-set, OpenAI is used. You can force demo mode even with a key set via
-`--demo`.
+You can force demo mode even with a key set via `--demo`.
 
 ## Usage
 
@@ -115,7 +111,7 @@ This writes `resume_bullets.md` and `cover_letter.md` into
 
 ```
 $ python3 -m generator.cli -b examples/background.yaml -j examples/job_description.txt -o /tmp/out
-No OPENAI_API_KEY or ANTHROPIC_API_KEY found. Running in demo mode: using keyword matching, not an LLM.
+No OPENAI_API_KEY found. Running in demo mode: using keyword matching, not an LLM.
 Mode: demo
 Wrote /tmp/out/resume_bullets.md
 Wrote /tmp/out/cover_letter.md
@@ -126,7 +122,7 @@ Wrote /tmp/out/cover_letter.md
 ```markdown
 # Tailored Resume Bullets for Jordan Alvarez
 
-> _Generated in **demo mode** (no `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` found) using deterministic keyword matching, not an LLM. Set one of those environment variables for genuinely tailored, freshly written content._
+> _Generated in **demo mode** (no `OPENAI_API_KEY` found) using deterministic keyword matching, not an LLM. Set that environment variable for genuinely tailored, freshly written content._
 
 ## Skills to Highlight (matched to this job)
 
