@@ -1,0 +1,46 @@
+Job Title: Backend Software Engineer
+Company: Riverstone Digital
+
+About Riverstone Digital:
+Riverstone Digital builds workflow automation software for mid-size
+logistics companies. Our platform processes millions of shipment events
+per day and helps operations teams cut manual work by 70% or more. We're
+a Series B startup, remote-friendly, with a small, senior engineering team.
+
+About the Role:
+We're looking for a Backend Software Engineer to help us scale our core
+platform as we grow from 200 to 1,000+ customers over the next two years.
+You'll own services end-to-end, from design through deployment and
+on-call support, and work closely with product and data science.
+
+Responsibilities:
+- Design, build, and maintain REST APIs and backend services in Python
+- Improve the performance and reliability of our core data pipeline,
+  which processes millions of events per day
+- Migrate legacy services toward a containerized, Kubernetes-based
+  deployment on AWS
+- Set up and improve CI/CD pipelines to speed up and de-risk releases
+- Write thorough unit and integration tests as part of everyday development
+- Collaborate with product managers and designers in an Agile/Scrum process
+- Mentor junior engineers and participate in code review
+- Help design database schemas and write efficient SQL against PostgreSQL
+
+Requirements:
+- 3+ years of professional software engineering experience
+- Strong proficiency in Python; Django or a similar web framework
+- Experience designing and consuming REST APIs
+- Hands-on experience with AWS, Docker, and ideally Kubernetes
+- Solid SQL skills and experience with PostgreSQL or a similar RDBMS
+- Experience with CI/CD tooling (GitHub Actions, Jenkins, or similar)
+- Comfort working in an Agile/Scrum team environment
+- Strong unit testing and system design fundamentals
+- Excellent written communication skills for a remote-first team
+
+Nice to Have:
+- Experience with data pipelines or event-driven architectures
+- Experience mentoring other engineers
+- Familiarity with monitoring/observability tooling
+- A degree in Computer Science or equivalent practical experience
+
+Riverstone Digital offers competitive salary, equity, fully remote work,
+and a strong culture of ownership and continuous learning.

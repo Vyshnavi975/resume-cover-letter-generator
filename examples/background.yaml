@@ -1,0 +1,73 @@
+# Example candidate background file.
+#
+# This is a fictional person used to demo the tool. Copy this file,
+# replace the values with your own, and pass it to the CLI with
+# --background path/to/your_background.yaml
+#
+# Required top-level fields: name, skills, experience
+# Everything else is optional but recommended.
+
+name: Jordan Alvarez
+email: jordan.alvarez@example.com
+phone: "555-201-4488"
+location: Austin, TX
+linkedin: linkedin.com/in/jordan-alvarez-example
+
+summary: >
+  Backend-leaning software engineer with 5 years of experience building
+  and scaling data-driven web applications, APIs, and internal tooling.
+  Comfortable owning a feature from design through production, and known
+  for mentoring junior engineers and improving team processes.
+
+skills:
+  - Python
+  - Django
+  - PostgreSQL
+  - REST API design
+  - AWS
+  - Docker
+  - CI/CD
+  - Kubernetes
+  - Data pipelines
+  - SQL
+  - Agile/Scrum
+  - Mentoring
+  - System design
+  - Unit testing
+
+experience:
+  - title: Senior Software Engineer
+    company: Northlake Analytics
+    dates: "2022 - Present"
+    achievements:
+      - Led the redesign of the core billing service, migrating a monolithic
+        Django app to a set of REST APIs and cutting average response time by 45%.
+      - Built a data pipeline processing 2M+ events per day using Python and
+        PostgreSQL, replacing a brittle nightly batch job with near real-time updates.
+      - Mentored 3 junior engineers through onboarding and code review, two of
+        whom were promoted within a year.
+      - Introduced automated CI/CD with GitHub Actions and Docker, reducing
+        deployment time from 40 minutes to under 5.
+      - Partnered with product and design in an Agile/Scrum process to ship a
+        customer-facing analytics dashboard used by 10,000+ monthly active users.
+
+  - title: Software Engineer
+    company: Brightwell Software
+    dates: "2019 - 2022"
+    achievements:
+      - Developed and maintained REST APIs in Python/Django powering a B2B
+        SaaS platform with over 500 enterprise customers.
+      - Migrated infrastructure from a single EC2 instance to a containerized
+        deployment on AWS using Docker and Kubernetes, improving uptime to 99.95%.
+      - Wrote unit and integration tests that raised backend test coverage
+        from 52% to 88%, catching regressions before release.
+      - Collaborated with data scientists to expose model outputs through a
+        new internal API used by three downstream teams.
+
+education:
+  - degree: B.S. in Computer Science
+    school: University of Texas at Austin
+    year: "2019"
+
+certifications:
+  - AWS Certified Solutions Architect - Associate
